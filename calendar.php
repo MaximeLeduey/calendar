@@ -11,16 +11,20 @@ $defaultYear = date('Y');
 
 // on recupère les données des selects via l'url s'il existe, sinon, on prend la date d'aujourd'hui
 
+$monthNbr;
+$currentYear;
 
-if ($_GET['month'] == true) {
+extract($_GET);
+
+if (isset($month)) {
     $monthNbr = $_GET['month'];
     $currentYear = $_GET['year'];
 }
-elseif ($_GET['month'] == true && $_GET['year'] == false) {
+elseif (isset($month) && !isset($year)) {
     $monthNbr = $_GET['month'];
     $currentYear = $defaultYear;
 }
-elseif ($_GET['month'] == false && $_GET['year'] == true) {
+elseif (!isset($month) && isset($year)) {
     $monthNbr = $defaultMonth;
     $currentYear = $_GET['year'];
 }

@@ -1,0 +1,22 @@
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+table {
+    height: 70vh;
+    width: 70vw;
+}
+
+
+.visible, .hidden {
+    height: 100px;
+    text-align: center;
+    padding-top: 50px;
+}
+
+.arrow-left {
+    transform: rotate(-180deg);
+}

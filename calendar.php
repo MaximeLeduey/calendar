@@ -16,13 +16,13 @@ $monthNbr;
 $currentYear;
 
 
-if (!empty($_GET['month'])) {
+if (!empty($_GET['month']) && is_numeric($_GET['month'])) {
     $monthNbr = $_GET['month'];
 }
 else {
     $monthNbr = $defaultMonth;
 }
-if(!empty($_GET['year'])) {
+if(!empty($_GET['year']) && is_numeric($_GET['year'])) {
     $currentYear = $_GET['year'];
 }
 else {
@@ -107,7 +107,7 @@ $nextUrl = "calendar.php?month=$nextMonth&year=$nextYear";
 
                         // boucle pour créer les select pour les années
 
-                            for ($i = 1970; $i< 2031; $i++) {
+                            for ($i = 1970; $i< 2039; $i++) {
                                 if ($i == $currentYear) {
                                     echo "<option value=\"$i\" selected>$i</option>";
                                 }

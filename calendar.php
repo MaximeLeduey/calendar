@@ -6,6 +6,7 @@ $months = [1=>"Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", 
 
 $defaultMonth = date('n');
 $defaultYear = date('Y');
+$todayDay = date('d');
 
 
 
@@ -160,10 +161,21 @@ $nextUrl = "calendar.php?month=$nextMonth&year=$nextYear";
                             if ( $i >= $start ) {
                                 echo "<td class=\"$class\">$d</td>";
                                 $d++;
+                                if($monthNbr == $defaultMonth && $currentYear == $defaultYear) {
+                                    if ($d == $todayDay) {
+                                        $class = "today";
+                                    }
+                                    else if ($i > $daysNumber + $start - 1) {
+                                        $class = "hidden";
+                                    }
+                                    else {
+                                        $class = "visible";
+                                    }    
+                                }
                                 if ( $d > $daysNumber ) {
                                     $class = "hidden";
                                     $d = 1;
-                                }
+                                }   
                             } 
                             if ( $i%7 == 0 ) {
                                 echo $rowClose;

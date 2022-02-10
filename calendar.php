@@ -14,25 +14,19 @@ $defaultYear = date('Y');
 $monthNbr;
 $currentYear;
 
-extract($_GET);
 
-if (isset($month)) {
+if (!empty($_GET['month'])) {
     $monthNbr = $_GET['month'];
-    $currentYear = $_GET['year'];
-}
-elseif (isset($month) && !isset($year)) {
-    $monthNbr = $_GET['month'];
-    $currentYear = $defaultYear;
-}
-elseif (!isset($month) && isset($year)) {
-    $monthNbr = $defaultMonth;
-    $currentYear = $_GET['year'];
 }
 else {
     $monthNbr = $defaultMonth;
+}
+if(!empty($_GET['year'])) {
+    $currentYear = $_GET['year'];
+}
+else {
     $currentYear = $defaultYear;
 }
-
 
 
 // mois précédent
@@ -58,8 +52,8 @@ $endDate = new DateTime($currentYear.'-'.$monthNbr.'-'.$daysNumber);
 $end = $endDate->format('N');
 $iterationNbr = ($daysNumber + $start - 1) + ( 7 - $end);
 
-$prevUrl = "calendar.php/?month=$movingMonth&year=$movingYear";
-$nextUrl = "calendar.php/?month=$nextMonth&year=$nextYear";
+$prevUrl = "calendar.php?month=$movingMonth&year=$movingYear";
+$nextUrl = "calendar.php?month=$nextMonth&year=$nextYear";
 
 
 ?>
@@ -70,102 +64,117 @@ $nextUrl = "calendar.php/?month=$nextMonth&year=$nextYear";
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- on fait un reset css -->
-    <link rel="stylesheet" href="assets/css/reset.css">
+    <link rel="stylesheet" media="screen" type="text/css" href="assets/css/reset.css">
     <!-- on lie le css -->
-    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="./assets/css/styles.css">
     <title>Calendrier</title>
 </head>
 <body>
-    <a href=<?php echo $prevUrl ?>><img class="arrow-left" src="https://img.icons8.com/external-dreamstale-lineal-dreamstale/32/000000/external-right-arrow-arrows-dreamstale-lineal-dreamstale-15.png"/></a>
-    <h2><?php 
-        
-        echo ($months[$monthNbr]." ".$currentYear);
+    <div class="container">
+        <div class="header">
+            <div class="header-item">
+            <a href=<?php echo $prevUrl ?>><img class="arrow-left" src="https://img.icons8.com/external-dreamstale-lineal-dreamstale/32/000000/external-right-arrow-arrows-dreamstale-lineal-dreamstale-15.png"/></a>
+            <h2><?php 
+                
+                echo ($months[$monthNbr]." ".$currentYear);
 
-        
+                
 
-    ?></h2>
-    <a href=<?php echo $nextUrl ?>><img class="arrow-right" src="https://img.icons8.com/external-dreamstale-lineal-dreamstale/32/000000/external-right-arrow-arrows-dreamstale-lineal-dreamstale-15.png"/></a>
-    <form action="" method="GET">
-        <select name="month" id="month">
-            <?php 
+            ?></h2>
+            <a href=<?php echo $nextUrl ?>><img class="arrow-right" src="https://img.icons8.com/external-dreamstale-lineal-dreamstale/32/000000/external-right-arrow-arrows-dreamstale-lineal-dreamstale-15.png"/></a>
+            </div>
+            <div class="header-item">
+                <form action="" method="GET">
+                    <select name="month" id="month">
+                        <?php 
 
-             // boucle pour créer les select pour les mois
+                        // boucle pour créer les select pour les mois
 
-                foreach ($months as $counter=>$month) {
-                    if ( $counter == $monthNbr) {
-                        echo "<option value=\"$counter\" selected>$month</option>";
-                    }
-                    else {
-                        echo "<option value=\"$counter\">$month</option>";
-                    }
-                }
-            
-            ?>
-        </select>
-        <select name="year" id="year">
-            <?php 
+                            foreach ($months as $counter=>$month) {
+                                if ( $counter == $monthNbr) {
+                                    echo "<option value=\"$counter\" selected>$month</option>";
+                                }
+                                else {
+                                    echo "<option value=\"$counter\">$month</option>";
+                                }
+                            }
+                        
+                        ?>
+                    </select>
+                    <select name="year" id="year">
+                        <?php 
 
-            // boucle pour créer les select pour les années
+                        // boucle pour créer les select pour les années
 
-                for ($i = 1970; $i< 2031; $i++) {
-                    if ($i == $currentYear) {
-                        echo "<option value=\"$i\" selected>$i</option>";
-                    }
-                    else {
-                        echo "<option value=\"$i\">$i</option>";
-                    }
-                }
-            ?>
-        </select>
-        <button type="submit">Valider</button>
-    </form>
-    <table>
-        <thead>
-            <tr>
+                            for ($i = 1970; $i< 2031; $i++) {
+                                if ($i == $currentYear) {
+                                    echo "<option value=\"$i\" selected>$i</option>";
+                                }
+                                else {
+                                    echo "<option value=\"$i\">$i</option>";
+                                }
+                            }
+                        ?>
+                    </select>
+                    <button type="submit">Valider</button>
+                </form>
+            </div>
+           
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <?php 
+
+                        // boucle pour créer les abreviations des jours
+
+                        $daysText = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"];
+                        foreach($daysText as $day) {
+                            echo "<th>$day</th>";
+                        }
+                    
+                    ?>
+                </tr>
+            </thead>
+            <tbody>
+
                 <?php 
 
-                    // boucle pour créer les abreviations des jours
+                        // boucle qui utilise les variables pour le mois actuel et le mois précédent
 
-                    $daysText = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"];
-                    foreach($daysText as $day) {
-                        echo "<th>$day</th>";
-                    }
-                
-                ?>
-            </tr>
-        </thead>
-        <tbody>
-
-            <?php 
-
-                    // boucle qui utilise les variables pour le mois actuel et le mois précédent
-                    $rowOpen = "<tr>";
-                    $rowClose = "</tr>";
-                    echo $rowOpen; 
-                    $p = $daysNumberLastMonth - $start + 2;
-                    for ( $i = 1; $i <= $iterationNbr; $i++) {
-                        if ($i < $start) {
-                            echo "<td class='hidden'>$p</td>";
-                            $p++;
-                        }
-                        if ($i == $start) {
-                            $d = 1;
-                        }
-                        if ( $i >= $start ) {
-                            echo "<td class=\"visible\">$d</td>";
-                            $d++;
-                            if ( $d > $daysNumber ) {
+                        $rowOpen = "<tr>";
+                        $rowClose = "</tr>";
+                        echo $rowOpen;
+                        $class; 
+                        $p = $daysNumberLastMonth - $start + 2;
+                        for ( $i = 1; $i <= $iterationNbr; $i++) {
+                            if ($i < $start) {
+                                $class = "hidden";
+                                echo "<td class=\"$class\">$p</td>";
+                                $p++;
+                            }
+                            if ($i == $start) {
+                                $class = "visible";
                                 $d = 1;
                             }
-                        } 
-                        if ( $i%7 == 0 ) {
-                            echo $rowClose;
-                            echo $rowOpen;
-                        }   
-                    }       
-                    
-            ?>
-        </tbody>
-    </table>
+                            if ( $i >= $start ) {
+                                echo "<td class=\"$class\">$d</td>";
+                                $d++;
+                                if ( $d > $daysNumber ) {
+                                    $class = "hidden";
+                                    $d = 1;
+                                }
+                            } 
+                            if ( $i%7 == 0 ) {
+                                echo $rowClose;
+                                echo $rowOpen;
+                            }   
+                        }       
+                        
+                ?>
+            </tbody>
+        </table>
+    </div>
+    
 </body>
 </html>
